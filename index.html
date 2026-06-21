@@ -325,17 +325,18 @@
       This is where we collect their stories.
     </p>
 
-    <div class="form-wrap">
+    <div class="form-wrap" id="form-wrap">
       <input
         type="email"
         class="email-input"
+        id="email-input"
         placeholder="your@email.com"
         aria-label="Email address"
       >
-      <button class="email-btn">Follow the Story</button>
+      <button class="email-btn" id="submit-btn">Follow the Story</button>
     </div>
 
-    <p class="fine-print">NEW STORIES &nbsp;·&nbsp; NO SCHEDULE &nbsp;·&nbsp; NO SPAM</p>
+    <p class="fine-print" id="form-status">NEW STORIES &nbsp;·&nbsp; NO SCHEDULE &nbsp;·&nbsp; NO SPAM</p>
 
   </section>
 
@@ -343,5 +344,47 @@
     <p class="footer-line">© WELCOME TO NOD &nbsp;&nbsp;·&nbsp;&nbsp; 🌵</p>
   </footer>
 
+  <script>
+    document.getElementById('submit-btn').addEventListener('click', async () => {
+      const input  = document.getElementById('email-input');
+      const btn    = document.getElementById('submit-btn');
+      const status = document.getElementById('form-status');
+      const email  = input.value.trim();
+
+      if (!email || !email.includes('@')) {
+        status.textContent = 'ENTER A VALID EMAIL';
+        status.style.color = '#B87333';
+        status.style.opacity = '1';
+        return;
+      }
+
+      btn.textContent = 'SENDING…';
+      btn.disabled = true;
+      input.disabled = true;
+
+      try {
+        const res = await fetch('/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+
+        if (res.ok || res.status === 204) {
+          document.getElementById('form-wrap').innerHTML =
+            '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;letter-spacing:0.2em;color:#00D4B8;opacity:0.9;">YOU\'RE IN. STORIES INCOMING.</p>';
+          status.textContent = '';
+        } else {
+          throw new Error(res.status);
+        }
+      } catch {
+        btn.textContent = 'Follow the Story';
+        btn.disabled = false;
+        input.disabled = false;
+        status.textContent = 'SOMETHING WENT WRONG — TRY AGAIN';
+        status.style.color = '#B87333';
+        status.style.opacity = '1';
+      }
+    });
+  </script>
 </body>
 </html>
