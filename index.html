@@ -4,9 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to Nod</title>
-  <meta name="description" content="An ordinary city. Impossible things. Stories from a place that shouldn't exist.">
+  <meta name="description" content="Strange things happen in Nod. We strongly advise against reading further.">
+
   <meta property="og:title" content="Welcome to Nod">
-  <meta property="og:description" content="An ordinary city. Impossible things.">
+  <meta property="og:description" content="Strange things happen in Nod. We strongly advise against reading further.">
+  <meta property="og:image" content="https://welcometonod.pages.dev/assets/nod-hero.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://welcometonod.pages.dev">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Welcome to Nod">
+  <meta name="twitter:description" content="Strange things happen in Nod. We strongly advise against reading further.">
+  <meta name="twitter:image" content="https://welcometonod.pages.dev/assets/nod-hero.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Space+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
 
@@ -18,12 +27,11 @@
     }
 
     :root {
-      --bg:      #0D0B0E;
-      --copper:  #B87333;
-      --teal:    #00D4B8;
-      --white:   #E8E4DC;
-      --mid:     #6B6572;
-      --overlay: rgba(13, 11, 14, 0.68);
+      --bg:     #0D0B0E;
+      --copper: #B87333;
+      --teal:   #00D4B8;
+      --white:  #E8E4DC;
+      --mid:    #6B6572;
     }
 
     html, body {
@@ -34,11 +42,10 @@
       overflow-x: hidden;
     }
 
-    /* ── VEIN ─ single teal pulse running up the left edge ── */
+    /* ── VEIN ── */
     .vein {
       position: fixed;
-      left: 0;
-      top: 0;
+      left: 0; top: 0;
       width: 2px;
       height: 100vh;
       background: linear-gradient(to top, transparent 0%, var(--teal) 50%, transparent 100%);
@@ -51,10 +58,33 @@
     }
 
     @keyframes vein-pulse {
-      0%          { opacity: 0;   transform: scaleY(0);   transform-origin: bottom center; }
-      20%         { opacity: 0.7; transform: scaleY(1);   transform-origin: bottom center; }
-      60%         { opacity: 0.5; transform: scaleY(1);   transform-origin: top center;    }
-      80%, 100%   { opacity: 0;   transform: scaleY(0);   transform-origin: top center;    }
+      0%        { opacity: 0;   transform: scaleY(0); transform-origin: bottom center; }
+      20%       { opacity: 0.7; transform: scaleY(1); transform-origin: bottom center; }
+      60%       { opacity: 0.5; transform: scaleY(1); transform-origin: top center;    }
+      80%, 100% { opacity: 0;   transform: scaleY(0); transform-origin: top center;    }
+    }
+
+    /* ── ORBS ── */
+    #orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: orb-rise linear infinite;
+    }
+
+    @keyframes orb-rise {
+      0%   { transform: translateY(0)       translateX(0);           opacity: 0;   }
+      8%   { opacity: var(--op, 0.6); }
+      92%  { opacity: calc(var(--op, 0.6) * 0.5); }
+      100% { transform: translateY(-105vh) translateX(var(--drift)); opacity: 0;   }
     }
 
     /* ── HERO ── */
@@ -65,18 +95,17 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 80px 24px 60px;
+      padding: 80px 24px 64px;
       position: relative;
-
-      /* Gradient fallback renders beautifully if image isn't present yet */
+      z-index: 2;
       background:
         linear-gradient(
           to bottom,
-          rgba(13,11,14,0.55) 0%,
-          rgba(13,11,14,0.45) 35%,
-          rgba(13,11,14,0.88) 100%
+          rgba(13,11,14,0.72) 0%,
+          rgba(13,11,14,0.28) 42%,
+          rgba(13,11,14,0.78) 100%
         ),
-        url('assets/reach.jpg') center 30% / cover no-repeat,
+        url('assets/nod-hero.png') 65% center / cover no-repeat,
         linear-gradient(160deg, #1C0F06 0%, #0D0B0E 35%, #060B14 65%, #0A1A16 100%);
     }
 
@@ -84,7 +113,6 @@
     .coords {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
-      font-weight: 300;
       letter-spacing: 0.35em;
       color: var(--teal);
       text-transform: uppercase;
@@ -97,7 +125,6 @@
     .eyebrow {
       font-family: 'Cinzel', serif;
       font-size: clamp(11px, 1.8vw, 15px);
-      font-weight: 400;
       letter-spacing: 0.55em;
       color: var(--copper);
       text-transform: uppercase;
@@ -108,7 +135,7 @@
     /* ── TITLE ── */
     .title-nod {
       font-family: 'Cinzel', serif;
-      font-size: clamp(96px, 20vw, 220px);
+      font-size: clamp(88px, 18vw, 200px);
       font-weight: 900;
       line-height: 0.85;
       color: var(--white);
@@ -118,11 +145,6 @@
       animation: fade-in 2s ease 0.4s both;
     }
 
-    /*
-      Glitch: two pseudo-elements slice the title into teal + copper bands
-      and briefly displace them — like The Reach's digital artifacts firing.
-      Fires once every ~10 seconds, lasts ~0.25s total. Blink and miss it.
-    */
     .title-nod::before,
     .title-nod::after {
       content: 'NOD';
@@ -150,9 +172,9 @@
 
     @keyframes glitch-a {
       0%, 85%, 89%, 100% { opacity: 0; transform: translate(0); }
-      86%  { opacity: 1; transform: translate(-5px,  2px); }
-      87%  { opacity: 1; transform: translate( 3px, -1px); }
-      88%  { opacity: 0; transform: translate(0); }
+      86% { opacity: 1; transform: translate(-5px,  2px); }
+      87% { opacity: 1; transform: translate( 3px, -1px); }
+      88% { opacity: 0; transform: translate(0); }
     }
 
     @keyframes glitch-b {
@@ -175,34 +197,59 @@
     /* ── TAGLINE ── */
     .tagline {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(17px, 2.5vw, 24px);
+      font-size: clamp(16px, 2.2vw, 22px);
       font-weight: 300;
       color: var(--white);
-      letter-spacing: 0.04em;
-      margin-bottom: 18px;
+      letter-spacing: 0.03em;
+      line-height: 1.5;
+      margin-bottom: 14px;
       opacity: 0.92;
       animation: fade-in 2s ease 0.7s both;
     }
 
-    /* ── DESCRIPTION ── */
-    .description {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(14px, 1.7vw, 17px);
-      font-weight: 300;
-      color: var(--mid);
-      line-height: 1.75;
-      max-width: 460px;
-      margin: 0 auto 52px;
+    /* ── WARNING ── */
+    .warning {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(10px, 1.2vw, 12px);
+      color: var(--copper);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      margin-bottom: 52px;
       animation: fade-in 2s ease 0.85s both;
     }
 
-    /* ── EMAIL FORM ── */
+    /* ── GALLERY BUTTON ── */
+    .btn-gallery {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #0D0B0E;
+      background: var(--copper);
+      padding: 17px 44px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 44px;
+      transition: background 0.2s, transform 0.15s;
+      animation: fade-in 2s ease 1s both;
+    }
+
+    .btn-gallery:hover {
+      background: #CC8A45;
+      transform: translateY(-2px);
+    }
+
+    /* ── FORM ── */
     .form-wrap {
       display: flex;
       max-width: 420px;
       width: 100%;
       margin: 0 auto;
-      animation: fade-in 2s ease 1s both;
+      animation: fade-in 2s ease 1.1s both;
     }
 
     .email-input {
@@ -225,22 +272,24 @@
     .email-input:focus { border-color: var(--teal); }
 
     .email-btn {
-      background: var(--copper);
-      color: #0D0B0E;
+      background: transparent;
+      color: var(--teal);
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10px;
-      font-weight: 400;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       padding: 15px 22px;
-      border: none;
+      border: 1px solid var(--teal);
       cursor: pointer;
       border-radius: 0;
       white-space: nowrap;
-      transition: background 0.2s;
+      transition: background 0.2s, color 0.2s;
     }
 
-    .email-btn:hover { background: #CC8A45; }
+    .email-btn:hover {
+      background: var(--teal);
+      color: #0D0B0E;
+    }
 
     .fine-print {
       font-family: 'IBM Plex Mono', monospace;
@@ -249,7 +298,7 @@
       letter-spacing: 0.15em;
       margin-top: 16px;
       opacity: 0.5;
-      animation: fade-in 2s ease 1.1s both;
+      animation: fade-in 2s ease 1.2s both;
     }
 
     /* ── FOOTER ── */
@@ -257,6 +306,8 @@
       padding: 28px 24px;
       text-align: center;
       border-top: 1px solid rgba(232, 228, 220, 0.05);
+      position: relative;
+      z-index: 2;
     }
 
     .footer-line {
@@ -275,31 +326,20 @@
 
     /* ── MOBILE ── */
     @media (max-width: 480px) {
-      .form-wrap {
-        flex-direction: column;
-      }
+      .form-wrap { flex-direction: column; }
       .email-input {
         border-right: 1px solid rgba(232, 228, 220, 0.14);
         border-bottom: none;
       }
-      .email-btn {
-        padding: 15px;
-      }
+      .email-btn { padding: 15px; }
     }
 
     /* ── REDUCED MOTION ── */
     @media (prefers-reduced-motion: reduce) {
-      .title-nod::before,
-      .title-nod::after,
-      .vein {
-        animation: none;
-        opacity: 0;
-      }
+      .title-nod::before, .title-nod::after, .vein, .orb { animation: none; opacity: 0; }
       .coords, .eyebrow, .title-nod, .divider,
-      .tagline, .description, .form-wrap, .fine-print {
-        animation: none;
-        opacity: 1;
-        transform: none;
+      .tagline, .warning, .btn-gallery, .form-wrap, .fine-print {
+        animation: none; opacity: 1; transform: none;
       }
     }
   </style>
@@ -307,6 +347,7 @@
 <body>
 
   <div class="vein" aria-hidden="true"></div>
+  <div id="orbs" aria-hidden="true"></div>
 
   <section class="hero">
 
@@ -317,13 +358,10 @@
 
     <div class="divider"></div>
 
-    <p class="tagline">An ordinary city. Impossible things.</p>
+    <p class="tagline">Strange things happen in Nod.<br>We strongly advise against reading further.</p>
+    <p class="warning">That is your only warning.</p>
 
-    <p class="description">
-      Somewhere in the American Southwest, there is a city called Nod.
-      The people there live ordinary lives — until they don't.
-      This is where we collect their stories.
-    </p>
+    <a href="/stories" class="btn-gallery">Enter the Gallery</a>
 
     <div class="form-wrap" id="form-wrap">
       <input
@@ -345,6 +383,40 @@
   </footer>
 
   <script>
+    /* ── ORBS ── */
+    (function () {
+      const container = document.getElementById('orbs');
+      const COUNT = 20;
+
+      for (let i = 0; i < COUNT; i++) {
+        const orb = document.createElement('span');
+        const size     = 2 + Math.random() * 3.5;
+        const x        = Math.random() * 100;
+        const dur      = 10 + Math.random() * 14;
+        const delay    = -(Math.random() * dur);
+        const drift    = (Math.random() - 0.5) * 90;
+        const isTeal   = Math.random() > 0.3;
+        const color    = isTeal ? '#00D4B8' : '#E8C97A';
+        const op       = (0.35 + Math.random() * 0.45).toFixed(2);
+
+        orb.className = 'orb';
+        orb.style.cssText = `
+          width:${size}px;
+          height:${size}px;
+          left:${x}%;
+          bottom:-8px;
+          background:${color};
+          box-shadow:0 0 ${size + 3}px ${size}px ${color}55;
+          --drift:${drift}px;
+          --op:${op};
+          animation-duration:${dur}s;
+          animation-delay:${delay}s;
+        `;
+        container.appendChild(orb);
+      }
+    })();
+
+    /* ── EMAIL FORM ── */
     document.getElementById('submit-btn').addEventListener('click', async () => {
       const input  = document.getElementById('email-input');
       const btn    = document.getElementById('submit-btn');
@@ -369,7 +441,7 @@
           body: JSON.stringify({ email })
         });
 
-        if (res.ok || res.status === 204) {
+        if (res.ok) {
           document.getElementById('form-wrap').innerHTML =
             '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;letter-spacing:0.2em;color:#00D4B8;opacity:0.9;">YOU\'RE IN. STORIES INCOMING.</p>';
           status.textContent = '';
@@ -386,5 +458,6 @@
       }
     });
   </script>
+
 </body>
 </html>
