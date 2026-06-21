@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paul — Story No. 001 — Welcome to Nod</title>
+  <meta name="description" content="A twenty-year-old cuts someone off in traffic on a Wednesday in August and forgets about it before he gets home. The other driver doesn't forget.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Space+Grotesk:wght@300;400;500&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:     #0D0B0E;
+      --copper: #B87333;
+      --teal:   #00D4B8;
+      --white:  #E8E4DC;
+      --mid:    #7A7482;
+      --dim:    #3E3A45;
+      --border: rgba(232,228,220,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      line-height: 1.9;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── VEIN ── */
+    .vein {
+      position: fixed;
+      left: 0; top: 0;
+      width: 2px; height: 100vh;
+      background: linear-gradient(to top, transparent 0%, var(--teal) 50%, transparent 100%);
+      opacity: 0;
+      transform: scaleY(0);
+      transform-origin: bottom center;
+      animation: vein-pulse 7s ease-in-out infinite;
+      z-index: 200;
+      pointer-events: none;
+    }
+
+    @keyframes vein-pulse {
+      0%        { opacity: 0;   transform: scaleY(0); transform-origin: bottom center; }
+      20%       { opacity: 0.7; transform: scaleY(1); transform-origin: bottom center; }
+      60%       { opacity: 0.5; transform: scaleY(1); transform-origin: top center;    }
+      80%, 100% { opacity: 0;   transform: scaleY(0); transform-origin: top center;    }
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 2px; left: 0; right: 0;
+      padding: 22px 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(13,11,14,0.92) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    nav a {
+      pointer-events: all;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--white); }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: 0.1em;
+    }
+
+    .nav-logo span { color: var(--copper); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,11,14,0.15) 0%,
+        rgba(13,11,14,0.05) 25%,
+        rgba(13,11,14,0.65) 65%,
+        rgba(13,11,14,1) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 44px 72px;
+      max-width: 800px;
+    }
+
+    .story-number {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.35em;
+      color: var(--copper);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      opacity: 0.9;
+    }
+
+    .story-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(64px, 14vw, 130px);
+      font-weight: 900;
+      line-height: 0.88;
+      color: var(--white);
+      margin-bottom: 32px;
+      letter-spacing: -0.01em;
+      text-shadow: 0 4px 32px rgba(0,0,0,0.6);
+    }
+
+    .story-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .char-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border: 1px solid rgba(0,212,184,0.45);
+      padding: 6px 14px;
+      border-radius: 2px;
+    }
+
+    .story-themes {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: var(--copper);
+      text-transform: lowercase;
+      opacity: 0.8;
+    }
+
+    .story-themes span + span::before { content: ' · '; }
+
+    /* ── BODY COLUMN ── */
+    .body-col {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 44px;
+    }
+
+    /* ── HARLAN BROADCAST ── */
+    .harlan-open {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 72px 44px 0;
+    }
+
+    .broadcast {
+      border-left: 2px solid var(--teal);
+      padding: 28px 36px;
+      background: rgba(0,212,184,0.06);
+      margin: 56px 0;
+      position: relative;
+    }
+
+    .broadcast::before {
+      content: 'KNOD · TRANSMISSION';
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      color: var(--teal);
+      background: var(--bg);
+      padding: 0 8px;
+      opacity: 0.7;
+    }
+
+    .broadcast p {
+      font-size: 18px;
+      font-style: italic;
+      color: rgba(232,228,220,0.75);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .broadcast p:last-of-type { margin-bottom: 20px; }
+
+    .broadcast cite {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      color: var(--teal);
+      font-style: normal;
+      display: block;
+      opacity: 0.7;
+    }
+
+    /* ── STORY TEXT ── */
+    .story-body {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 44px;
+    }
+
+    .story-body p {
+      margin-bottom: 32px;
+      color: var(--white);
+      opacity: 0.88;
+    }
+
+    .story-body p em {
+      font-style: italic;
+      color: var(--white);
+      opacity: 1;
+    }
+
+    /* ── SECTION BREAKS ── */
+    .section-break {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 64px 0;
+    }
+
+    .section-break::before,
+    .section-break::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .section-break span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      color: var(--teal);
+      opacity: 0.5;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── STORY FIGURES ── */
+    .story-figure {
+      width: 100%;
+      margin: 72px 0;
+    }
+
+    .story-figure img {
+      width: 100%;
+      display: block;
+      max-height: 75vh;
+      object-fit: cover;
+    }
+
+    .story-figure figcaption {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--mid);
+      text-transform: uppercase;
+      padding: 16px 44px 0;
+      opacity: 0.55;
+    }
+
+    /* ── CODA ── */
+    .coda-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 44px;
+    }
+
+    .coda {
+      border-top: 1px solid rgba(0,212,184,0.2);
+      padding-top: 56px;
+      margin-top: 80px;
+      margin-bottom: 40px;
+    }
+
+    .coda-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      color: var(--teal);
+      text-transform: uppercase;
+      opacity: 0.6;
+      margin-bottom: 32px;
+      display: block;
+    }
+
+    .coda p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      color: var(--mid);
+      line-height: 2;
+      margin-bottom: 20px;
+    }
+
+    .coda p:last-child { margin-bottom: 0; }
+
+    /* ── END MATTER ── */
+    .end-matter {
+      max-width: 760px;
+      margin: 88px auto 0;
+      padding: 48px 44px 120px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .end-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--mid);
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .back-link {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: gap 0.2s;
+    }
+
+    .back-link:hover { gap: 14px; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 44px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--mid);
+      letter-spacing: 0.22em;
+      opacity: 0.35;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      body { font-size: 18px; }
+      nav { padding: 18px 24px; }
+      .hero-content { padding: 0 24px 52px; }
+      .harlan-open { padding: 56px 24px 0; }
+      .story-body { padding-left: 24px; padding-right: 24px; }
+      .story-figure figcaption { padding-left: 24px; }
+      .coda-wrap { padding-left: 24px; padding-right: 24px; }
+      .end-matter { padding: 40px 24px 80px; }
+      footer { padding: 24px; flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .vein { animation: none; opacity: 0; }
+      .progress-bar { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="vein" aria-hidden="true"></div>
+  <div class="progress-bar" id="progress"></div>
+
+  <nav>
+    <a href="/stories">← Stories</a>
+    <a href="/" class="nav-logo">Welcome to <span>Nod</span></a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img
+      class="hero-image"
+      src="/assets/paul-painting.png"
+      alt="Paul — Night Gallery painting"
+    >
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="story-number">Story No. 001</p>
+      <h1 class="story-title">Paul</h1>
+      <div class="story-tags">
+        <span class="char-tag">Paul</span>
+        <span class="char-tag">Warren</span>
+      </div>
+      <p class="story-themes">
+        <span>grudges</span>
+        <span>ordinary men</span>
+        <span>consequence</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HARLAN OPEN -->
+  <div class="harlan-open">
+    <div class="broadcast">
+      <p>"There's a man I think about sometimes. Don't know his name. Probably doesn't matter. What I think about is the specific moment — you know the one. The moment right before a person commits to something they can't uncommit to. It's probably about three seconds long. And in those three seconds they are still both people — the one they were and the one they're deciding to become. That's the only moment I ever want to write about. Everything after is just consequence."</p>
+      <p>A long pause. Longer than any professional pause had a right to be.</p>
+      <p>"Anyway."</p>
+      <cite>— HARLAN · KNOD · 2:41AM</cite>
+    </div>
+  </div>
+
+  <!-- STORY BODY — PART ONE -->
+  <div class="story-body">
+
+    <p>Warren coached third base because nobody else wanted to.</p>
+
+    <p>It wasn't that the other fathers didn't show up — they showed up, they brought the orange slices and the folding chairs and the unconditional enthusiasm of men who had traded ambition for something quieter and were mostly at peace with it. They cheered. They drove the carpool. But standing in the dirt for two hours giving hand signals to nine-year-olds who weren't watching required a specific kind of patience, and Warren had it, and so Warren coached third base going on four years now.</p>
+
+    <p>His daughter Maya played center field. She was not especially talented and did not especially care, which Warren found more endearing than any natural ability could have explained. She was out there for the social architecture of it — the dugout gossip, the sunflower seeds, the specific camaraderie of girls who had agreed to spend their Saturday mornings in matching shirts. She waved at Warren from center field sometimes. He waved back.</p>
+
+    <p>His wife Karen sat in the third row of the bleachers with the other mothers and a coffee that was always too cold by the time she remembered to drink it. She laughed easily and loudly and Warren could pick her laugh out of any crowd. He had always liked that about her. He still did.</p>
+
+    <p>This is what Warren looked like from the outside.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>Verge was a forty-minute flight on a Silt Air regional connector that seated thirty-two and was never more than half full. Warren took the six-fifteen out every morning and the four-forty back, which put him home by six most evenings in time for dinner. Six years of this. The seat he preferred was 7A — window, just behind the wing — and it was available often enough that he had stopped thinking of it as a preference and started thinking of it as his.</p>
+
+    <p>He did not talk about Verge at home. Not because he'd been told not to — though he had, technically, signed documents to that effect — but because there was nothing to say that translated. The work was analytical. Pattern recognition across data sets that arrived without context and departed the same way. He was good at it. He had always been good at holding two things in his mind at once without needing them to connect.</p>
+
+    <p>What happened at Verge in the spring of his fifth year was not something Warren could have explained to a doctor, a priest, or his wife. It was not an event, exactly. More like a recalibration. He had seen something in the data — a pattern that implied a thing he was not prepared to name — and the implication had done something to the machinery behind his eyes that he could not undo and could not describe and eventually stopped trying to.</p>
+
+    <p>He came home on a Thursday same as always. Karen made pasta. Maya had a vocabulary test Monday she had not studied for. Warren sat at the kitchen table and helped her with the words and ate the pasta and loaded the dishwasher and watched forty minutes of something on television and went to bed.</p>
+
+    <p>He lay in the dark next to his wife's breathing and understood, with a calm that surprised him, that something had changed in the way the world felt. Not the world itself. The feeling of it. Like watching a film he had seen before — the events unfolding correctly, the emotional beats landing approximately where they should, but underneath it the low-grade awareness that none of it was happening for the first time.</p>
+
+    <p>He told himself it was fatigue.</p>
+
+    <p>He was good at telling himself things.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>The incident with Paul happened on a Wednesday in August.</p>
+
+    <p>Warren was coming back from the hardware store — a specific kind of weatherproof caulk for the window in Maya's bathroom that he'd been meaning to replace since March — and he was thinking about nothing. That was the honest answer. The radio was on. He was thinking about nothing.</p>
+
+    <p>Paul came off the on-ramp too fast and cut across two lanes without signaling and Warren had to brake hard enough that the bag in the passenger seat tipped over. The caulk rolled under the seat. Paul's car — a silver Civic with a dent in the rear quarter panel — accelerated ahead and Paul's hand came out the window, middle finger extended, casual as a wave, already moving on.</p>
+
+    <p>Gone in four seconds.</p>
+
+    <p>Warren sat with his hands on the wheel at the next red light. His heart was beating. He noticed that. The light changed. He drove home.</p>
+
+    <p>He put the caulk in the bathroom cabinet and washed his hands at the kitchen sink and stood there for a moment with the water running, looking at the backyard through the window. Maya's bicycle was on its side in the grass. He had told her three times to put it in the garage.</p>
+
+    <p>He turned off the water and went to fix the window.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>He didn't follow Paul that day.</p>
+
+    <p>He did think about him. That was the honest answer. Not obsessively — he went to Maya's volleyball game on Thursday, had dinner with Karen's sister and her husband on Friday, took the six-fifteen to Verge on Monday same as always. He thought about Paul the way you think about a pebble in your shoe. A low-grade, intermittent irritant. Disproportionate to the cause.</p>
+
+    <p>The thing was — and Warren understood this about himself, had understood it since April, had turned it over carefully in the way he turned everything over — the thing was that Paul had not made him angry. Not exactly. What Paul had done was give him something to attach to. An address for a feeling that had been circling without one.</p>
+
+    <p>He had been waiting, he understood now, for a reason.</p>
+
+    <p>He told himself he was just angry. He told himself he wasn't actually going to do anything. He told himself that the drive he took one evening — down Calloway, left on Mesa, right on Sycamore, past the house with the silver Civic in the driveway — was just a drive. People drove. It meant nothing. He just wanted to see where the guy lived. That was all. Just information.</p>
+
+    <p>He drove past twice.</p>
+
+    <p>The second time he noted the layout. The side yard. The gate that didn't latch properly. The way the streetlight on the corner left a significant shadow at the edge of the property. Paul's bedroom light on the second floor. The window open. The sound, faint, of music.</p>
+
+    <p>He drove home and helped Maya with her math homework and watched the news with Karen and went to bed and lay in the dark for a long time.</p>
+
+    <p>Just information, he told himself.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>He couldn't sleep some nights and on those nights he sometimes found himself at the kitchen table with the small radio Karen kept on the counter for company while she cooked. He'd turn it low, just below the threshold of words, and let it sit. Something about the static felt like company.</p>
+
+    <p>He found KNOD by accident on a Tuesday in September. He didn't know what it was. He almost turned past it.</p>
+
+    <div class="broadcast">
+      <p>"There's a man I think about sometimes. Don't know his name. Probably doesn't matter. What I think about is the specific moment — you know the one. The moment right before a person commits to something they can't uncommit to. It's probably about three seconds long. And in those three seconds they are still both people — the one they were and the one they're deciding to become. That's the only moment I ever want to write about. Everything after is just consequence."</p>
+      <p>A long pause. Longer than any professional pause had a right to be.</p>
+      <p>"Anyway."</p>
+      <cite>— HARLAN · KNOD · 2:41AM</cite>
+    </div>
+
+    <p>Warren sat with his coffee going cold and listened to the static for a while after the voice moved on.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>It was a Saturday night in October.</p>
+
+    <p>Warren knew Paul went out on Saturday nights because he had driven past the house enough times to know Paul's patterns, and he was analytical by training and inclination, and patterns were what he did. Paul left between nine and ten. Usually came back between two and three. Sometimes alone. Sometimes not.</p>
+
+    <p>Warren had not made his decision impulsively. He understood the difference between an impulse and a resolution, and this was a resolution, reached methodically over the course of several weeks. An analyst commits to a course of action only after understanding its parameters. Warren had done the research — not the obsessive research of a disturbed mind but the quiet research of a man in the habit of knowing what he was doing before he did it. He understood spinal anatomy the way he understood most things: systematically, without feeling.</p>
+
+    <p>He had purchased the instrument three weeks earlier. A length of galvanized steel pipe, eighteen inches, half-inch diameter, from a hardware store forty minutes outside Nod, paid for with cash he'd withdrawn in increments over two weeks. He kept it wrapped in a shop rag in the bottom of a toolbox in the garage. He did not think about it daily. He thought about it when he needed to and otherwise did not.</p>
+
+    <p>He parked two streets over. He walked to the side yard through the shadow of the faulty streetlight, through the gate that didn't latch properly, and he stood in the dark and he waited. He was calm. That surprised him — he had expected something else, some physiological announcement of what he was about to do. There was nothing. Just the dark and the faint sound of the neighborhood and his own breathing, which was even.</p>
+
+  </div>
+
+  <!-- GATE IMAGE -->
+  <figure class="story-figure">
+    <img
+      src="/assets/paul-gate.png"
+      alt="The gate on Sycamore Street"
+      loading="lazy"
+    >
+    <figcaption>Sycamore Street &nbsp;·&nbsp; 2:17am &nbsp;·&nbsp; October</figcaption>
+  </figure>
+
+  <!-- STORY BODY — PART TWO -->
+  <div class="story-body">
+
+    <p>Paul came home at two-seventeen. Warren knew the time because he checked his watch — not out of anxiety but out of habit, the same habit that made him good at his job. Paul was alone. He was not quite steady on his feet — not drunk, exactly, but softened by the night, moving with the loose confidence of someone who had never once considered that the dark held anything waiting for him.</p>
+
+    <p>Warren hit him from behind, at the base of the skull — enough to take his legs out from under him, not enough to do what came next. Paul went down fast and without a sound, and Warren was on him before the sound could find its way out. He worked methodically. The lower spine, twice, measured. The legs — femurs, both — to prevent what he understood the body would otherwise attempt. He was precise. He did not deviate from what he had planned. He counted his breaths the way he had taught himself to count at Verge when the data got complicated and his mind needed an anchor.</p>
+
+    <p>It lasted four minutes and twenty seconds.</p>
+
+    <p>When it was over he stood in the dark for a moment. He was breathing harder than he expected. Not from exertion. From something that lived adjacent to exertion and was not quite the same thing.</p>
+
+    <p>Paul was not moving. The sound he was making was low and without shape, the sound of a body trying to locate itself and failing. Warren looked at him for three seconds. He felt something he had no name for.</p>
+
+    <p>He walked to his car and drove home.</p>
+
+    <p>He thought Paul would be dead by morning.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>The quiet lasted nine days.</p>
+
+    <p>He took the six-fifteen to Verge. He coached third base on Saturday — they lost, close game, Maya waved from center field. He helped Karen repaint the hallway a color called Antique Linen that looked identical to the previous color called Warm Canvas and he did not say this out loud because Karen had been excited about the change and it was not a hill. He felt horrible. He did. That was the true thing.</p>
+
+    <p>But horrible was a feeling and feelings were weather and weather passed.</p>
+
+    <p>Paul was gone. The night was over. Warren was the only person alive who knew what had happened in that side yard and he was going to take it to his grave without breaking a sweat. He was certain of this. He was analytical by nature and he had analyzed the situation from every angle and he was certain.</p>
+
+    <p>On the ninth day he came downstairs at six-fifteen and Karen was already at the kitchen table with her coffee and the small television on the counter turned to the local news and Warren opened the refrigerator and stood looking at it without seeing anything in particular.</p>
+
+    <p><em>Nod police are asking for the public's help in identifying anyone with information about the assault of a twenty-year-old Nod man discovered Saturday night in the three hundred block of Sycamore —</em></p>
+
+    <p>Warren closed the refrigerator.</p>
+
+    <p>He stood with his back to the television.</p>
+
+    <p><em>— the victim, whose name has not been released pending family notification, was transported to Desert Valley Medical Center where he remains in critical condition —</em></p>
+
+    <p>Karen made a sound. A small sound. The one she made when something on the news was sad. She made it and moved on, turned back to her coffee, the way you move on from other people's tragedies when they are other people.</p>
+
+    <p>Warren poured his coffee.</p>
+
+    <p>He sat at the table.</p>
+
+    <p>He drank it.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>He drove past the house on a Thursday evening three weeks after the news.</p>
+
+    <p>He told himself it was the same route he always took home. He had taken this route twice before in his life and both times it had been deliberate. He was not going to pretend otherwise, not even to himself. He drove slowly.</p>
+
+    <p>The ramp was already there — raw wood, freshly built, running from the porch to the driveway at a careful angle. You could see the urgency in it, the slight unevenness on the left side where someone had run out of patience or daylight. And at the top of it, in the amber light of the porch fixture, Paul's father was pushing the wheelchair up the incline and his shoes kept slipping on the wood because the wood was still new and smooth and the angle was just steep enough to make it hard and he was not a large man.</p>
+
+    <p>Paul's mother held the front door open with her body. She was saying something Warren couldn't hear. Her face was doing something Karen's face had never done and Warren hoped it never would.</p>
+
+    <p>Paul sat in the chair the way things sit when they are no longer in charge of where they go. Head slightly forward. Hands in his lap. He was wearing the kind of sweatpants that go on easy, and Warren knew exactly why that was, and knowing it was a specific kind of knowledge he had not asked for and could not return.</p>
+
+    <p>The father's shoe slipped again. He caught himself on the railing. The chair wobbled. Paul's mother said something sharper this time. The father reset his grip and pushed again and the chair made it to the top and they got him through the door and the door closed and the porch light stayed on over nothing.</p>
+
+    <p>Warren had pulled over without noticing he had done it. He was half a block away. He sat with his hands on the wheel and watched the closed door for a long time and then something broke open in his chest in a way that he had not anticipated and could not stop.</p>
+
+    <p>He cried in a way that had no dignity to it. Not the kind that feels like release. The kind that feels like the body trying to expel something the body was not built to contain. He sat in his car on Sycamore Street and cried for a long time and did not care who saw him because nobody saw him because it was a Thursday evening and Nod was inside eating dinner.</p>
+
+    <p>Eventually it stopped. These things do.</p>
+
+    <p>He drove home. Karen was already in bed. Maya's light was off. The house was the way the house gets at that hour — familiar, slightly foreign, somebody else's life that you happen to live inside.</p>
+
+    <p>Warren did not go to bed.</p>
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>He sat at the kitchen table with the lights low and the small radio off and his hands flat on the surface and he began, methodically and without rushing, to construct the thing he needed to live inside.</p>
+
+    <p>Everyone gets hurt. That was the first brick. Everyone — every single person alive — carries something. A loss, a body failing, a thing taken that was not given back. Paul Greer was not the only person in Nod tonight who was hurting. He was not even close to the only person. The hospital was full. The city was full. Pain was not exceptional. Pain was the rule.</p>
+
+    <p>Everyone dies. That was the second brick. This was the one Warren returned to most often because it was the most true and therefore the most load-bearing. Every person Warren had ever known or would ever know was going to die. Paul Greer was going to die. Warren was going to die. Karen was going to die. Maya — and here Warren's mind moved quickly, he did not linger — Maya was going to die. The sequence was fixed. The dates were unknown. The outcome was not. In the context of that outcome, what was the meaningful distinction between a life cut short by accident, by illness, by violence, by time? The ending was the same. The middle was just duration.</p>
+
+    <p>Everyone has a story. That was the third brick. Paul Greer's story was what it was now. It had changed shape. But it was still a story. People recovered from things. People rebuilt. He had seen it. There were whole industries built around the proposition that terrible things happened to people and then their lives continued and sometimes those continued lives became the most interesting version of the life they would have had. Paul Greer was twenty years old. He had time. He had family. He had — Warren believed this, wanted to believe it, told himself he believed it — a future that was different but not nothing.</p>
+
+    <p>He was not a bad person. That was the fourth brick, and the most important, and the one he spent the longest on. Bad people did not coach little league for four years without being asked. Bad people did not notice their wife's laugh in a crowd and feel something about it. Bad people did not help their daughters with vocabulary tests at nine o'clock on a school night. Warren did all of these things and did them genuinely, without performance. The things he had done and the person he was — these were two separate columns. He had looked at this from every analytical angle and he believed they could be kept separate.</p>
+
+    <p>He sat at the table until one in the morning.</p>
+
+    <p>He went to bed.</p>
+
+    <p>He lay in the dark next to his wife's breathing and he said it one more time, quietly, to the ceiling:</p>
+
+    <p><em>I am not a bad person.</em></p>
+
+    <p>He believed it.</p>
+
+    <p>That was the thing about Warren that mattered most. He actually believed it.</p>
+
+  </div>
+
+  <!-- HAND IMAGE -->
+  <figure class="story-figure">
+    <img
+      src="/assets/paul-hand.png"
+      alt="Warren's kitchen table"
+      loading="lazy"
+    >
+    <figcaption>Warren's kitchen &nbsp;·&nbsp; 1:07am</figcaption>
+  </figure>
+
+  <!-- STORY BODY — PART THREE -->
+  <div class="story-body">
+
+    <div class="section-break"><span>·</span></div>
+
+    <p>Paul's name came out six weeks after the incident. His last name was Greer. He was a junior at Nod Community College, pre-kinesiology, which struck Warren as the specific cruelty that Nod occasionally trafficked in — a boy who had dedicated himself to the study of the body, now negotiating terms with the one he had. He'd been a sprinter. Two hundred meters. Warren found this out from an article the college paper ran, which he read on his phone in the parking lot of the grocery store and then deleted from his history.</p>
+
+    <p>He sat in the parking lot for a while.</p>
+
+    <p>He thought about Paul at nineteen, twenty — the specific physical confidence of a sprinter, the body as instrument, the certainty of it. Warren had never been athletic. He understood that certainty only from the outside. But he understood it. He understood what its absence would cost.</p>
+
+    <p>The girlfriend had stayed, initially. The article mentioned her. Warren did not let himself read that part twice.</p>
+
+    <p>He drove home. Karen was making dinner. Maya was doing homework at the kitchen table and complaining about it in the specific register of a child who wants company more than sympathy.</p>
+
+    <p>Warren set the groceries on the counter and kissed his wife and sat down across from his daughter and asked her what she was working on.</p>
+
+    <p>She told him.</p>
+
+    <p>He helped.</p>
+
+    <p>The food smelled good. The kitchen was warm. Outside, Nod was doing what Nod did — going about its Thursday, conducting its ordinary life.</p>
+
+    <p>Somewhere across the city, Paul Greer's mother was doing the seven o'clock routine and his father was looking at a bill he couldn't open and the ramp on the front porch was wet from the evening's brief rain.</p>
+
+    <p>Warren ate his dinner.</p>
+
+    <p>He thought: <em>I am not a bad person.</em></p>
+
+    <p>He thought: <em>Everyone dies eventually.</em></p>
+
+    <p>It worked better than it had at the table that night. He noted this. Filed it.</p>
+
+    <p>He finished his dinner. He washed his plate. He went to bed at ten-fifteen and lay in the dark next to his wife's breathing and was asleep in under four minutes, which was faster than he used to fall asleep and slower than he eventually would.</p>
+
+  </div>
+
+  <!-- CODA -->
+  <div class="coda-wrap">
+    <div class="coda">
+      <span class="coda-label">Coda</span>
+      <p>KNOD broadcasts nightly from somewhere in Nod. Harlan is on from 2 to 5.</p>
+      <p>Paul Greer's physical therapy begins the second Monday of November. He has been told the process will take years. He has been told this carefully, by people who understand that how you say a thing matters as much as the thing.</p>
+      <p>He listened. He didn't say anything.</p>
+      <p>He is thinking about the car. The one that had been behind him on the on-ramp. He'd barely registered it at the time — just a car, just a Wednesday, just some guy who couldn't handle a merge.</p>
+      <p>He is starting to remember the headlights.</p>
+      <p>He has a lot of time to remember.</p>
+    </div>
+  </div>
+
+  <!-- HOSPITAL IMAGE -->
+  <figure class="story-figure">
+    <img
+      src="/assets/paul-hospital.png"
+      alt="Desert Valley Medical Center — Physical Therapy"
+      loading="lazy"
+    >
+    <figcaption>Desert Valley Medical Center &nbsp;·&nbsp; Physical Therapy &nbsp;·&nbsp; November</figcaption>
+  </figure>
+
+  <!-- END MATTER -->
+  <div class="end-matter">
+    <p class="end-label">Story No. 001 — End</p>
+    <a href="/stories" class="back-link">Back to Stories &nbsp;→</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p class="footer-text">© WELCOME TO NOD &nbsp;·&nbsp; ALL ACCOUNTS UNVERIFIED</p>
+    <p class="footer-text">🌵</p>
+  </footer>
+
+  <script>
+    const bar = document.getElementById('progress');
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const scrolled = doc.scrollTop || document.body.scrollTop;
+      const total = doc.scrollHeight - doc.clientHeight;
+      bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
