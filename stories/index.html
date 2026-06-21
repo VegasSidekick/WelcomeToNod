@@ -151,6 +151,42 @@
     /* mobile tap */
     .story-image.revealed .img-painting { opacity: 0; }
 
+    /* ── PHOTO OVERLAY LINK ── */
+    .img-overlay-link {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 28px;
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      background: linear-gradient(to top, rgba(13,11,14,0.7) 0%, transparent 45%);
+      pointer-events: none;
+    }
+
+    .img-overlay-link span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+
+    @media (hover: hover) {
+      .story-image:hover .img-overlay-link {
+        opacity: 1;
+        pointer-events: all;
+      }
+    }
+
+    .story-image.revealed .img-overlay-link {
+      opacity: 1;
+      pointer-events: all;
+    }
+
     /* tap hint — mobile only */
     .tap-hint {
       position: absolute;
@@ -327,6 +363,9 @@
           alt="The ramp — Night Gallery painting"
           draggable="false"
         >
+        <a href="/paul" class="img-overlay-link" tabindex="-1" aria-hidden="true">
+          <span>Read the Story &nbsp;→</span>
+        </a>
         <span class="tap-hint">Tap to reveal</span>
       </div>
 
